@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MoviesApp</title>
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/bdc6f0c28f.js" crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div class="wrapper">
+
+        <!-- Nav Section -->
+        <section id="nav-section">
+
+            <nav class="navbar">
+
+                <!-- Logo -->
+                <div class="nav-logo">
+                    <h1>MoviesApp</h1>
+                </div>
+
+                <!-- Menu Button (Open) -->
+                <div class="menu-btn" onclick="openMenu()">
+                    <i class="fa-solid fa-bars-staggered"></i>
+                </div>
+
+                <!-- Nav Items -->
+                <div class="nav-items">
+
+                    <!-- Close Button -->
+                    <div class="close-btn" onclick="closeMenu()">
+                        <i class="fa-solid fa-xmark"></i>
+                    </div>
+
+                    <!-- Search -->
+                    <div class="search-bar">
+                        <input type="text" id="search-input" placeholder="Search Movies...">
+                    </div>
+
+                    <!-- Buttons -->
+                    <div class="nav-buttons">
+
+                        <a href="favourite.html">
+                            <button class="nav-btn btn-favourite">Favourite</button>
+                        </a>
+
+                        <a href="cart.html">
+                            <button class="nav-btn btn-cart">Cart</button>
+                        </a>
+
+                        <div id="auth-section">
+                            <a href="./Authentication/login.html">
+                                <button class="nav-btn btn-login">Login</button>
+                            </a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <!-- Overlay -->
+                <div class="overlay" id="overlay" onclick="closeMenu()"></div>
+
+            </nav>
+
+        </section>
+
+        
+
+    </div>
+
+    
+    <!-- JS -->
+    <script src="index.js"></script>
+</body>
+</html>
