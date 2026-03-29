@@ -32,47 +32,48 @@ function Logout(){
     location.reload();
 }
 
-// Movies Container
+// Carts Container
 
-let allMovies = [];
+let cartMovies = [];
 
-const movieContainer = document.getElementById("movies-container");
+const cartContainer = document.getElementById("cart-container");
 
 async function getMoviesData() {
     try{
-        const response = await fetch("http://localhost:3000/movies");
-        allMovies = await response.json();
-        displayMovies(allMovies);
+        const response = await fetch("http://localhost:3000/cart");
+        cartMovies = await response.json();
+        displayMovies(cartMovies);
     }catch(err){
         console.log(err)
     }
 }
 
-async function handleCart(movie) {
+async function removeFromCart(id) {
     try {
-        let response = await fetch("http://localhost:3000/cart",{
-        method:"POST",
-        headers:{
-                'Content-Type': 'application/json', 
-            },
-        body:JSON.stringify(movie)
+        let response = await fetch(`http://localhost:3000/cart/${id}`,{
+        method:"DELETE",
     });
-    alert("Movie Added to Cart")
+    getMoviesData()
+    alert("Movie Deleted from Cart")
     } catch (error) {
         console.log(error);
     }
     
 }
 
-function displayMovies(movies = allMovies){
-    if(!movieContainer){
-        console.log("Movies container is missing");
+function displayMovies(movies = cartMovies){
+    if(!cartContainer){
+        console.log("Cart container is missing");
+        return;
     }
 
     if(!movies || movies.length == 0){
-        movieContainer.innerHTML = `<p>No Movies Available</p>`
+        cartContainer.innerHTML = `<p>No Movies Available</p>`;
+        return;
     }
-    movieContainer.innerHTML = "";
+
+    cartContainer.innerHTML = "";
+
     movies.forEach( movie => {
         const card = document.createElement("div");
 
@@ -89,17 +90,17 @@ function displayMovies(movies = allMovies){
             <div class = "movie-rating">${movie.rating}</div>
 
             <div class = "movie-buttons">
-                <button class = "nav-btn btn-cart">Cart</button>
+                <button class = "nav-btn btn-cart remove-cart">Remove</button>
                 <button class = "nav-btn btn-favourite">Favourite</button>
             </div>
         </div>`
 
-        let cartBtn = card.querySelector(".btn-cart");
-        cartBtn.addEventListener("click",() => {
-            handleCart(movie)
+        let removeBtn = card.querySelector(".remove-cart");
+        removeBtn.addEventListener("click",() => {
+            removeFromCart(movie.id)
         })
 
-        movieContainer.appendChild(card)
+        cartContainer.appendChild(card)
     })
 }
 
