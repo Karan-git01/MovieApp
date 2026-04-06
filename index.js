@@ -32,9 +32,61 @@ function Logout(){
     location.reload();
 }
 
-// Movies Container
+// Carousal Section
+
+const carousalImages = ["https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQLn_hLNWGL5RdeoL0ng6VxEUijSsK_Hh3QAw&s","https://lh6.googleusercontent.com/proxy/MX3D4QatCD48FMfsynnWIAs4g1JT8iTM4K-05xetNMuZ3h5JmVuiRcnRo2BN86tEPuD9KFOtAPpwsZPQKXjwG19oAwaJqxTKvzChZV_V_7ostQ","https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShZlfWUaYo_-GznDVJ4b6XV19EHeEzHW3XfQ&s"]
 
 let allMovies = [];
+
+// Movies Container
+
+let currentSlide = 0;
+
+const carousalContainer = document.getElementById("carousal-container");
+
+function initCarousal(){
+    carousalContainer.innerHTML = "";
+    carousalImages.forEach( (imageURL,index) => {
+        const slide = document.createElement("div");
+        slide.className = "carousal-slide";
+        if(index == 0){
+            slide.classList.add("active")
+        }
+        
+        console.log(imageURL);
+
+        const img = document.createElement("img");
+        img.className = "carousal-image";
+        img.src = imageURL;
+        img.alt = `${index+1}`;
+        slide.appendChild(img)
+
+        carousalContainer.appendChild(slide);
+    })
+}
+
+function updateCarousal(){
+    const slides = document.querySelectorAll(".carousal-slide")
+    slides.forEach((slide,index) => {
+        if(index === currentSlide){
+            slide.classList.add("active");
+        }else{
+            slide.classList.remove("active");
+        }
+    })
+}
+
+function autoNext(){
+    currentSlide = (currentSlide + 1) % carousalImages.length;
+    updateCarousal()
+}
+
+
+function changeSlide(direction){
+    currentSlide = (currentSlide + direction + carousalImages.length) % carousalImages.length
+    updateCarousal()
+}
+
 
 const movieContainer = document.getElementById("movies-container");
 
@@ -47,6 +99,14 @@ async function getMoviesData() {
         console.log(err)
     }
 }
+
+const searchInput = document.getElementById("search-input");
+searchInput.addEventListener("input", ()=>{
+    const searchValue = searchInput.value;
+    const filterValue = allMovies.filter( movie=>
+        movie.title.toLowerCase().includes(searchValue.toLowerCase()));
+    displayMovies(filterValue)
+})
 
 async function handleCart(movie) {
     try {
@@ -86,7 +146,7 @@ function displayMovies(movies = allMovies){
             <div class = "movie-title">${movie.title}</div>
             <div class = "movie-year">${movie.year}</div>
             <div class = "movie-genre">${movie.Category}</div>
-            <div class = "movie-rating">${movie.rating}</div>
+            <div class = "movie-rating">${movie.rating}⭐</div>
 
             <div class = "movie-buttons">
                 <button class = "nav-btn btn-cart">Cart</button>
@@ -104,3 +164,5 @@ function displayMovies(movies = allMovies){
 }
 
 getMoviesData()
+initCarousal()
+setInterval(autoNext,5000)

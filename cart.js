@@ -42,6 +42,9 @@ async function getMoviesData() {
     try{
         const response = await fetch("http://localhost:3000/cart");
         cartMovies = await response.json();
+
+        allMovies = cartMovies;
+        
         displayMovies(cartMovies);
     }catch(err){
         console.log(err)
@@ -87,7 +90,7 @@ function displayMovies(movies = cartMovies){
             <div class = "movie-title">${movie.title}</div>
             <div class = "movie-year">${movie.year}</div>
             <div class = "movie-genre">${movie.Category}</div>
-            <div class = "movie-rating">${movie.rating}</div>
+            <div class = "movie-rating">${movie.rating}⭐</div>
 
             <div class = "movie-buttons">
                 <button class = "nav-btn btn-cart remove-cart">Remove</button>
@@ -103,5 +106,15 @@ function displayMovies(movies = cartMovies){
         cartContainer.appendChild(card)
     })
 }
+
+let allMovies = [];
+
+const searchInput = document.getElementById("search-input");
+searchInput.addEventListener("input", ()=>{
+    const searchValue = searchInput.value;
+    const filterValue = allMovies.filter( movie=>
+        movie.title.toLowerCase().includes(searchValue.toLowerCase()));
+    displayMovies(filterValue)
+})
 
 getMoviesData()
